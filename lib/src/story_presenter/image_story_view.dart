@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_story_presenter/flutter_story_presenter.dart';
@@ -155,13 +155,10 @@ class _ImageStoryViewState extends State<ImageStoryView> {
     /// If the image source is a network URL, use [CachedNetworkImage].
     return CachedNetworkImage(
       placeholder: (context, url) {
-        if (widget.customLoader != null) {
-          return widget.customLoader!;
-        }
-
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return imageConfig?.progressIndicatorBuilder.call() ??
+            const Center(
+              child: CircularProgressIndicator(),
+            );
       },
       imageUrl: widget.storyItem.url!,
       imageBuilder: (context, imageProvider) {
@@ -173,11 +170,7 @@ class _ImageStoryViewState extends State<ImageStoryView> {
           fit: imageConfig?.fit,
           width: imageConfig?.width,
           loadingBuilder: (context, child, loadingProgress) {
-            if (widget.customLoader != null) {
-              return widget.customLoader!;
-            } else {
-              return child;
-            }
+            return child;
           },
         );
       },
