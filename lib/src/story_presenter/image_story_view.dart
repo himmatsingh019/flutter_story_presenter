@@ -155,7 +155,7 @@ class _ImageStoryViewState extends State<ImageStoryView> {
     /// If the image source is a network URL, use [CachedNetworkImage].
     return CachedNetworkImage(
       placeholder: (context, url) {
-        return imageConfig?.progressIndicatorBuilder.call() ??
+        return widget.customLoader ??
             const Center(
               child: CircularProgressIndicator(),
             );
