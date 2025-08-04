@@ -45,6 +45,7 @@ class FlutterStoryPresenter extends StatefulWidget {
     this.footerWidget,
     this.onSlideDown,
     this.onSlideStart,
+    this.customLoader,
     super.key,
   }) : assert(initialIndex < items.length);
 
@@ -92,6 +93,9 @@ class FlutterStoryPresenter extends StatefulWidget {
 
   /// Widget to display text field or other content at the bottom of the screen.
   final Widget? footerWidget;
+
+  /// Create custom loader widget
+  final Widget? customLoader;
 
   @override
   State<FlutterStoryPresenter> createState() => _FlutterStoryPresenterState();
@@ -360,9 +364,7 @@ class _FlutterStoryPresenterState extends State<FlutterStoryPresenter>
         currentIndex != (widget.items.length - 1)) {
       /// Dispose the video player only in case of multiple story
       isCurrentItemLoaded = false;
-      setState(() {
-
-      });
+      setState(() {});
       _currentVideoPlayer?.removeListener(videoListener);
       _currentVideoPlayer?.dispose();
       _currentVideoPlayer = null;
@@ -445,13 +447,11 @@ class _FlutterStoryPresenterState extends State<FlutterStoryPresenter>
               onLoaded: () {
                 isCurrentItemLoaded = true;
                 _startStoryCountdown();
-
               },
               onAudioLoaded: (audioPlayer) {
                 isCurrentItemLoaded = true;
                 _audioPlayer = audioPlayer;
                 _startStoryCountdown();
-
               },
             ),
           ),
@@ -460,6 +460,7 @@ class _FlutterStoryPresenterState extends State<FlutterStoryPresenter>
           Positioned.fill(
             child: ImageStoryView(
               key: ValueKey('$currentIndex'),
+              customLoader: widget.customLoader,
               storyItem: currentItem,
               onImageLoaded: (isLoaded) {
                 isCurrentItemLoaded = isLoaded;

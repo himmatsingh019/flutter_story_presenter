@@ -19,10 +19,14 @@ class ImageStoryView extends StatefulWidget {
   /// Callback function to notify when the audio is loaded.
   final OnAudioLoaded? onAudioLoaded;
 
+  /// Create custom loader widget
+  final Widget? customLoader;
+
   const ImageStoryView({
     required this.storyItem,
     this.onImageLoaded,
     this.onAudioLoaded,
+    this.customLoader,
     super.key,
   });
 
@@ -98,6 +102,10 @@ class _ImageStoryViewState extends State<ImageStoryView> {
           return const SizedBox.shrink();
         },
         loadingBuilder: (context, child, loadingProgress) {
+          if (widget.customLoader != null) {
+            return widget.customLoader!;
+          }
+
           // Workaround for AssetImage loading issues.
           if (((child as Semantics).child as RawImage).image != null) {
             markImageAsLoaded();
