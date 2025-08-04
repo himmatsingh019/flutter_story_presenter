@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_story_presenter/flutter_story_presenter.dart';
@@ -158,7 +159,9 @@ class _ImageStoryViewState extends State<ImageStoryView> {
           return widget.customLoader!;
         }
 
-        return Container();
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
       imageUrl: widget.storyItem.url!,
       imageBuilder: (context, imageProvider) {
@@ -185,7 +188,7 @@ class _ImageStoryViewState extends State<ImageStoryView> {
         }
         return const SizedBox.shrink();
       },
-      progressIndicatorBuilder: imageConfig?.progressIndicatorBuilder,
+      // progressIndicatorBuilder: imageConfig?.progressIndicatorBuilder,
     );
   }
 }
